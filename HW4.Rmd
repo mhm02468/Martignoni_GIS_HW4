@@ -3,19 +3,42 @@ title: "HW4_RMarkdown"
 output: html_document
 date: "2022-10-27"
 ---
-
+##Setting Up Libraries
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+library(sp)
+library(sf)
+library(fs)
+library(tmap)
+library(tmaptools)
+library(RSQLite)
+library(tidyverse)
+library(rgdal)
+library(readr)
+library(dplyr)
+library(OpenStreetMap)
+library(janitor)
+library(terra)
+library(raster)
+library(ggplot2)
+library(here)
+library(readr)
+library(plotly)
 ```
 
-## R Markdown
+##Reading in the Data
+```{r}
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+Gender_Inequality_Data <- read_csv(here::here("hw4_data", "Gender_Inequality_Data.csv")) %>% 
+  na.omit() 
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+world_data <- st_read(here("hw4_data", "World_Countries_(Generalized).geojson"))
 
-```{r cars}
-summary(cars)
+```
+
+
+##Filtering and Organising the Data
+```{r}
+
 ```
 
 ## Including Plots
