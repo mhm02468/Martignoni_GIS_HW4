@@ -28,25 +28,39 @@ library(plotly)
 ##Reading in the Data
 ```{r}
 
-Gender_Inequality_Data <- read_csv(here::here("hw4_data", "Gender_Inequality_Data.csv")) %>% 
-  na.omit() 
+UN_composite_data <- read_csv(here::here("hw4_data", "Composite_Indices.csv")) %>% 
+  clean_names()
 
 world_data <- st_read(here("hw4_data", "World_Countries_(Generalized).geojson"))
 
 ```
 
-
 ##Filtering and Organising the Data
+
 ```{r}
+filtered_composite <- UN_composite_data %>% 
+  dplyr::select(country, contains("gii"))
+  
+filtered_composite2010_2019 <- filtered_composite %>% 
+  dplyr::select(country, gii_2010, gii_2019) %>% 
+  mutate(difference = (filtered_composite$gii_2019)-(filtered_composite$gii_2010))
 
 ```
 
-## Including Plots
-
-You can also embed plots, for example:
+##Joining the Spatial and Nonspatial Data
 
 ```{r pressure, echo=FALSE}
-plot(pressure)
+
+giidiff_map <- world_data %>% 
+  clean_names() %>% 
+  left_join(., filtered_composite2010_2019, by = c("country" = "country"))
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+##Maps
+
+In this simple map, the 
+
+```{r}
+qtm(giidiff_map, fill = "difference")
+```
+
